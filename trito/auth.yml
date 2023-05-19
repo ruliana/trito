@@ -1,0 +1,18 @@
+credentials:
+  usernames:
+    miguel:
+      email: miguliana@hotmail.com
+      name: Miguel
+      password: '$2b$12$Y3ViSmoDI5vKs3ZPXqP29O1gsmq.QHjh2flp4LFvccgr5kvC3wqkq'
+    test:
+      email: test@test.com
+      name: test_user
+      password: '$2b$12$Y3ViSmoDI5vKs3ZPXqP29O1gsmq.QHjh2flp4LFvccgr5kvC3wqkq'
+cookie:
+  expiry_days: 30
+  key: yadda_yadda_right
+  name: consultor_de_moda
+preauthorized:
+  emails:
+  - miguliana@hotmail.com
+  - test@test.com
