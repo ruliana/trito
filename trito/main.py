@@ -42,7 +42,7 @@ E qual é o propósito da vestimenta que está procurando?
 def chatbot():
     return ChatOpenAI(
         model_name='gpt-3.5-turbo',
-        temperature=0.2,
+        temperature=0.5,
         openai_api_key=st.secrets['openai_api_key']
     )
 
