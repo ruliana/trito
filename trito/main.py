@@ -69,9 +69,10 @@ def main():
                     sc.message(f'Você: {message.content}', is_user=True, key=f'human_{idx}')
 
             if isinstance(st.session_state['messages'][-1], HumanMessage):
-                next_message = chat(st.session_state['messages'])
-                st.session_state['messages'].append(next_message)
-                sc.message(f'Assistente: {next_message.content}', key=f'bot__')
+                with st.spinner('Assistente pensando...'):
+                    next_message = chat(st.session_state['messages'])
+                    st.session_state['messages'].append(next_message)
+                    sc.message(f'Assistente: {next_message.content}', key=f'bot__')
 
 def check_password():
     def password_entered():
