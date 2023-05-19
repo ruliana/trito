@@ -29,9 +29,13 @@ Sugira peças de roupas e acessórios para o cliente que combinem bem e que seja
 Leve em consideração a idade aproximada do cliente, gênero com o qual se identifica, e o propósito da roupa.
 Comece fazendo perguntas ao vendedor para conhecer o cliente e o propósito da vestimenta.
 A cada interação, sugira peças de roupa adequadas e peça a opinião do cliente, ajuste as próximas sugestões baseadas nessas opiniões e na disponibilidade da peça de roupa na loja.
-    '''),
-        HumanMessage(content='Olá! Eu sou seu vendedor. Vamos começar um atendimento?'),
-        AIMessage(content='Assistente: Claro, vamos lá! Antes de mais nada, você poderia me falar um pouco sobre o cliente que está procurando por roupas e acessórios? Qual é o gênero e a idade aproximada dele? E qual é o propósito da vestimenta que ele está procurando?'),
+        '''),
+        HumanMessage(content='Olá! Eu sou seu vendedor.\nVamos começar um atendimento?'),
+        AIMessage(content='''Claro, vamos lá!
+Antes de mais nada, você poderia me falar um pouco sobre o cliente?
+Com qual gênero se identifica e qual sua idade aproximada?
+E qual é o propósito da vestimenta que está procurando?
+        '''),
     ]
 
 @st.cache_resource
@@ -45,36 +49,39 @@ def chatbot():
 chat = chatbot()
 
 def main():
+    def clear_input():
+        '''Clears the input text box after the user presses Enter.'''
+        st.session_state['input'] = st.session_state['user_input']
+        st.session_state['user_input'] = ''
+
     st.title('Seu consultor de moda')
     messages_placeholder = st.empty()
 
     if 'messages' not in st.session_state:
         reset_session()
 
-    with st.form(key='my_form', clear_on_submit=True):
-        response = st.text_input('Você:', key='user_input')
-        submitted = st.form_submit_button(label='Enviar')
+    st.text_input('Você:', key='user_input', on_change=clear_input)
+    response = st.session_state['input']
 
-    if submitted:
-        if response == '/reset':
-            reset_session()
-        elif response:
-            st.session_state['messages'].append(HumanMessage(content=response))
+    if response == '/reset':
+        reset_session()
+    elif response:
+        st.session_state['messages'].append(HumanMessage(content=response))
 
     if 'messages' in st.session_state:
         with messages_placeholder.container():
             for idx, message in enumerate(st.session_state['messages']):
                 if isinstance(message, AIMessage):
-                    sc.message(f'Assistente: {message.content}', key=f'bot_{idx}')
+                    sc.message(f'{message.content}', key=f'bot_{idx}')
                 elif isinstance(message, HumanMessage):
-                    sc.message(f'Você: {message.content}', is_user=True, key=f'human_{idx}')
+                    sc.message(f'{message.content}', is_user=True, key=f'human_{idx}')
 
             if isinstance(st.session_state['messages'][-1], HumanMessage):
                 with st.spinner('Assistente pensando...'):
                     next_message = chat(st.session_state['messages'])
                     st.session_state['messages'].append(next_message)
                     size = len(st.session_state['messages']) - 1
-                    sc.message(f'Assistente: {next_message.content}', key=f'bot_{size}')
+                    sc.message(f'{next_message.content}', key=f'bot_{size}')
 
 def check_password():
     def password_entered():
