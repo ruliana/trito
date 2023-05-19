@@ -61,7 +61,11 @@ def main():
         reset_session()
 
     st.text_input('Você:', key='user_input', on_change=clear_input)
-    response = st.session_state['input']
+    if 'input' not in st.session_state:
+        response = None
+        st.session_state['input'] = None
+    else:
+        response = st.session_state['input']
 
     if response == '/reset':
         reset_session()
