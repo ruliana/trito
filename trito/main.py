@@ -1,24 +1,16 @@
 #!/usr/bin/env python3
 
-import yaml
-from yaml.loader import SafeLoader
-
 import streamlit as st
 import streamlit_chat as sc
 
 from langchain.chat_models import ChatOpenAI
-from langchain import PromptTemplate, LLMChain
-from langchain.prompts.chat import (
-    ChatPromptTemplate,
-    SystemMessagePromptTemplate,
-    AIMessagePromptTemplate,
-    HumanMessagePromptTemplate,
-)
 from langchain.schema import (
     AIMessage,
     HumanMessage,
     SystemMessage,
 )
+
+TITLE = 'Seu consultor de moda'
 
 def reset_session():
     st.session_state['messages'] = [
@@ -33,8 +25,8 @@ A cada interação, sugira peças de roupa adequadas e peça a opinião do clien
         HumanMessage(content='Olá! Eu sou seu vendedor.\nVamos começar um atendimento?'),
         AIMessage(content='''Claro, vamos lá!
 Antes de mais nada, você poderia me falar um pouco sobre o cliente?
-Com qual gênero se identifica e qual sua idade aproximada?
-E qual é o propósito da vestimenta que está procurando?
+Com qual gênero o cliente se identifica e qual sua idade aproximada?
+Ele procura uma roupa para qual ocasião? Para o dia a dia, para uma festa, para o trabalho, para um evento especial?
         '''),
     ]
 
@@ -54,7 +46,7 @@ def main():
         st.session_state['input'] = st.session_state['user_input']
         st.session_state['user_input'] = ''
 
-    st.title('Seu consultor de moda')
+    st.title(TITLE)
     messages_placeholder = st.empty()
 
     if 'messages' not in st.session_state:
