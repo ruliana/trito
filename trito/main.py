@@ -31,6 +31,7 @@ Comece fazendo perguntas ao vendedor para conhecer o cliente e o propósito da v
 A cada interação, sugira peças de roupa adequadas e peça a opinião do cliente, ajuste as próximas sugestões baseadas nessas opiniões e na disponibilidade da peça de roupa na loja.
     '''),
         HumanMessage(content='Olá! Eu sou seu vendedor. Vamos começar um atendimento?'),
+        AIMessage(content='Assistente: Claro, vamos lá! Antes de mais nada, você poderia me falar um pouco sobre o cliente que está procurando por roupas e acessórios? Qual é o gênero e a idade aproximada dele? E qual é o propósito da vestimenta que ele está procurando?'),
     ]
 
 @st.cache_resource
@@ -72,7 +73,8 @@ def main():
                 with st.spinner('Assistente pensando...'):
                     next_message = chat(st.session_state['messages'])
                     st.session_state['messages'].append(next_message)
-                    sc.message(f'Assistente: {next_message.content}', key=f'bot__')
+                    size = len(st.session_state['messages']) - 1
+                    sc.message(f'Assistente: {next_message.content}', key=f'bot_{size}')
 
 def check_password():
     def password_entered():
